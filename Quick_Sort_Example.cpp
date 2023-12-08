@@ -17,7 +17,7 @@ int partition(int arr[], int low, int high)
 {
     int pivot = arr[high]; // Pivotu en saðdaki eleman olarak ayarlandý.
 
-    // Pivotu doðru konuma getir
+    // Pivotu doðru konuma ge tir
     int i = (low - 1); 
 
     for (int j = low; j <= high - 1; j++) 

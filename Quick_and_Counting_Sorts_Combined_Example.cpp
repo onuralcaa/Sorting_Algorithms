@@ -11,33 +11,33 @@
 //------QUICK SORT FONKSIYONU
 
 // Dizi elemanlarýný yer deðiþtir.
-void swap(int *a, int *b) 
+void swap_islemi(int *a, int *b) 
 {
-    int temp = *a;
+    int gecici = *a;
     *a = *b;
-    *b = temp;
+    *b = gecici;
 }
 
-// Quick Sort Fonksiyonu
-int partition(int arr[], int low, int high) 
+// Quick Sort partition bölümü
+int partition(int dizi[], int low, int high) 
 {
-    int pivot = arr[high]; // Pivotu en saðdaki eleman olarak ayarlandý.
+    int pivot = dizi[high]; // Pivotu en saðdaki eleman olarak ayarlandý.
 
-    // Pivotu doðru konuma getir
+    // Pivotu doðru konuma getirilir
     int i = (low - 1); 
 
     for (int j = low; j <= high - 1; j++) 
 	{
 
-        if (arr[j] < pivot) 
+        if (dizi[j] < pivot) 
 		{
             i++;
-            swap(&arr[i], &arr[j]);
+            swap_islemi(&dizi[i], &dizi[j]);
         }
     }
 
-    // Pivot'u doðru konuma yerleþtir
-    swap(&arr[i + 1], &arr[high]);
+    // Pivot'u doðru konuma yerleþtirilir
+    swap_islemi(&dizi[i + 1], &dizi[high]);
     return (i + 1);
 }
 
@@ -46,10 +46,13 @@ void quickSort(int arr[], int low_item, int high_item)
     if (low_item < high_item) 
 	{
         // arr[pivotIndex] þu anki diziyi ikiye bölen pivot'un doðru konumunu döndürür
+        
         int pivotIndex = partition(arr, low_item, high_item);
 
         // Pivot'tan küçük ve büyük alt dizileri sýrala-recursive fonk. mantýðý
+        
         quickSort(arr, low_item, pivotIndex - 1);
+        
         quickSort(arr, pivotIndex + 1, high_item);
     }
 }
@@ -59,23 +62,23 @@ void quickSort(int arr[], int low_item, int high_item)
 //----------COUNTING SORT FONKSIYONU--------------
 
 // Counting Sort Fonksiyonu
-void counting_sort(int A[], int k, int n, int B[]) 
+void counting_sort(int C_D[], int m, int n, int B[]) 
 {
-    int C[100001];
+    int C_max[100001];
 
-    for (int i = 0; i <= k; i++)
-        C[i] = 0;
+    for (int i = 0; i <= m; i++)
+        C_max[i] = 0;
 
     for (int j = 0; j < n; j++)
-        C[A[j]] = C[A[j]] + 1;
+        C_max[C_D[j]] = C_max[C_D[j]] + 1;
 
-    for (int i = 1; i <= k; i++)
-        C[i] = C[i] + C[i - 1];
+    for (int i = 1; i <= m; i++)
+        C_max[i] = C_max[i] + C_max[i - 1];
 
     for (int j = n - 1; j >= 0; j--) 
 	{
-        B[C[A[j]] - 1] = A[j];
-        C[A[j]] = C[A[j]] - 1;
+        B[C_max[C_D[j]] - 1] = C_D[j];
+        C_max[C_D[j]] = C_max[C_D[j]] - 1;
     }
 
 }
@@ -85,28 +88,31 @@ int main()
 {
 	//-----------Rastgele sayi dizisi tanimlamalari----------------------
 	srand(time(0));
-	int dizi_1[10], dizi_2[100], dizi_3[1000], dizi_4[10000], dizi_5[100000];
-	int dizi_a[10], dizi_b[100], dizi_c[1000], dizi_d[10000], dizi_e[100000];
+	int dizi_1[10], dizi_2[100], dizi_3[1000], dizi_4[10000], dizi_5[100000]; //Quick sort dizisi
+	int dizi_a[10], dizi_b[100], dizi_c[1000], dizi_d[10000], dizi_e[100000]; //Counting sort dizisi
 	
+	//Dizi boyut elemanlarý (Her iki algoritma icin ortak)
 	int n1 = 10;
 	int n2 = 100;
 	int n3 = 1000;
 	int n4 = 10000;
 	int n5 = 100000;
 	
+	//Counting sort en buyuk degerli eleman deðiskenleri
 	int k1 = 0, k2 = 0, k3 = 0, k4 = 0, k5 = 0;
 	
+	//Counting sort sirali dizi deðiskenleri
 	int s_dizi_1[n1], s_dizi_2[n2], s_dizi_3[n3], s_dizi_4[n4], s_dizi_5[n5] ;
 	
 	//rastgele 100000 sayi-10 luk dizi
 	for(int i = 0; i < n1; i++) 
 	{
         dizi_1[i] = rand() % 100000; // 0 - 10
-        dizi_a[i] = dizi_1[i];  //dizi kopyalama
+        dizi_a[i] = dizi_1[i];  //dizi kopyalama islemi
 		
 		if (dizi_a[i] > k1) 
 		{	
-        	k1 = dizi_a[i];//counting sort için en büyük elemaný bulma
+        	k1 = dizi_a[i];//counting sort için en büyük elemani bulma
     	}  
     }
     
@@ -122,11 +128,11 @@ int main()
     for(int i = 0; i < n2; i++) 
 	{
         dizi_2[i] = rand() % 100001; // 0 - 100
-        dizi_b[i] = dizi_2[i];  //dizi kopyalama 
+        dizi_b[i] = dizi_2[i];  //dizi kopyalama islemi
         
         if (dizi_b[i] > k2) 
 		{	
-        	k2 = dizi_b[i];//counting sort için en büyük elemaný bulma
+        	k2 = dizi_b[i];//counting sort için en büyük elemani bulma
     	}  
     }
     
@@ -134,11 +140,11 @@ int main()
     for(int i = 0; i < n3; i++) 
 	{
         dizi_3[i] = rand() % 100001; // 0 - 1000
-        dizi_c[i] = dizi_3[i];  //dizi kopyalama 
+        dizi_c[i] = dizi_3[i];  //dizi kopyalama islemi
         
         if (dizi_c[i] > k3) 
 		{	
-        	k3 = dizi_c[i]; //counting sort için en büyük elemaný bulma
+        	k3 = dizi_c[i]; //counting sort için en büyük elemani bulma
     	}  
     }
     
@@ -146,11 +152,11 @@ int main()
     for(int i = 0; i < n4; i++) 
 	{
         dizi_4[i] = rand() % 100001; // 0 - 10000
-        dizi_d[i] = dizi_4[i];  //dizi kopyalama 
+        dizi_d[i] = dizi_4[i];  //dizi kopyalama islemi
         
         if (dizi_d[i] > k4) 
 		{	
-        	k4 = dizi_d[i];//counting sort için en büyük elemaný bulma
+        	k4 = dizi_d[i];//counting sort için en büyük elemani bulma
     	}  
     }
     
@@ -158,11 +164,11 @@ int main()
     for(int i = 0; i < n5; i++) 
 	{
         dizi_5[i] = rand() % 100001; // 0 - 100000
-        dizi_e[i] = dizi_5[i];  //dizi kopyalama 
+        dizi_e[i] = dizi_5[i];  //dizi kopyalama islemi
         
         if (dizi_e[i] > k5) 
 		{	
-        	k5 = dizi_e[i];//counting sort için en büyük elemaný bulma
+        	k5 = dizi_e[i];//counting sort için en büyük elemani bulma
     	}  
     }
     
@@ -280,7 +286,7 @@ int main()
     struct timespec start4, end4;
     clock_gettime(CLOCK_MONOTONIC, &start4);
 
-    // MERGE SORT 
+    // QUICK SORT
 	quickSort(dizi_4, 0, n4-1);
 
     // 10000 luk dizi diralama sonrasi zaman olcumu
@@ -298,7 +304,7 @@ int main()
     struct timespec start5, end5;
     clock_gettime(CLOCK_MONOTONIC, &start5);
 
-    // MERGE SORT 
+    // QUICK SORT 
 	quickSort(dizi_5, 0, n5-1);
 
     // 10000 luk dizi diralama sonrasi zaman olcumu
